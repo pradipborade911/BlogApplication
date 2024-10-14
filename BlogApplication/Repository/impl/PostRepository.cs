@@ -14,7 +14,8 @@ namespace BlogApplication.Repository.impl
 
         public async Task<Post> GetByIdAsync(int id)
         {
-            return await _dbContext.Posts.FindAsync(id);
+            return await _dbContext.Posts.Include(p => p.Tags)
+                .SingleOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<IEnumerable<Post>> GetAllAsync()
@@ -36,16 +37,22 @@ namespace BlogApplication.Repository.impl
             _dbContext.Posts.Update(post);
             await _dbContext.SaveChangesAsync();
         }
-
         public async Task DeleteAsync(int id)
         {
-            var post = await GetByIdAsync(id);
-            if (post != null)
-            {
-                _dbContext.Posts.Remove(post);
-                await _dbContext.SaveChangesAsync();
-            }
+            var post = new Post { Id = id };
+            _dbContext.Posts.Attach(post);
+            _dbContext.Posts.Remove(post);
+            await _dbContext.SaveChangesAsync();
+
         }
+
+        public IQueryable<Post> GetAllAsQueryable()
+        {
+            return _dbContext.Posts.Include(p => p.Tags)
+                                   .Include(p => p.User)
+                                   .AsQueryable();
+        }
+
     }
 
 }

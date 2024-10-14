@@ -3,7 +3,6 @@ using BlogApplication.Repository;
 using BlogApplication.Service.impl;
 using BlogApplication.Service;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
 
 namespace BlogApplication
 {
@@ -19,6 +18,10 @@ namespace BlogApplication
             // Register services
             builder.Services.AddScoped<IPostRepository, PostRepository>();
             builder.Services.AddScoped<IPostService, PostService>();
+
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+            builder.Services.AddScoped<ITagRepository, TagRepository>();
 
             ////Register AppDbContext
             builder.Services.AddDbContext<AppDbContext>(options =>
@@ -43,7 +46,7 @@ namespace BlogApplication
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Post}/{action=AllPosts}");
 
             app.Run();
         }

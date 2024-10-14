@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BlogApplication.DTOs;
 using BlogApplication.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BlogApplication
 {
@@ -9,8 +8,10 @@ namespace BlogApplication
     {
         public MappingProfile()
         {
+            CreateMap<Post, PostSummaryDTO>();
             CreateMap<Post, PostDetailsDTO>();
             CreateMap<PostRequestDTO, Post>();
+            CreateMap<Post, PostRequestDTO>();
 
             CreateMap<Comment, CommentDetailsDTO>();
             CreateMap<CommentRequestDTO, Comment>();

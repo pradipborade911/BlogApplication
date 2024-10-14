@@ -1,16 +1,22 @@
-﻿namespace BlogApplication.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BlogApplication.DTOs
 {
     public class PostRequestDTO
     {
+        public long Id { get; set; }
+
+        [Required]
+        [StringLength(100)]
         public string Title { get; set; }
+
+        [DataType(DataType.MultilineText)]
         public string Excerpt { get; set; }
+
+        [DataType(DataType.MultilineText)]
         public string Content { get; set; }
-        public bool IsPublished { get; set; }
 
-        // For existing tags
-        public List<int> TagIds { get; set; }
-
-        // For new tags
-        public List<string> NewTags { get; set; }
+        [Display(Name = "Tags")]
+        public string TagsList { get; set; }
     }
 }

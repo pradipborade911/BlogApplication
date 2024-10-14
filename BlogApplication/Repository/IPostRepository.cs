@@ -9,6 +9,7 @@ namespace BlogApplication.Repository
         Task AddAsync(Post post);
         Task UpdateAsync(Post post);
         Task DeleteAsync(int id);
+        IQueryable<Post> GetAllAsQueryable();
     }
 
 }

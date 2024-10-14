@@ -1,0 +1,96 @@
+﻿@model BlogApplication.DTOs.PaginatedPostListDTO
+
+@{
+    ViewData["Title"] = "Paginated Post List";
+}
+
+<h1>Posts</h1>
+
+<h4>Filter Posts</h4>
+
+<form method="get" action="@Url.Action("AllPosts")">
+    <input type="text" name="searchQuery" value="@Model.SearchQuery" placeholder="Search..." />
+
+    <label for="tagIds">Select Tags:</label>
+    <select name="tagIds" multiple>
+        <option disabled>Select tags...</option>
+        @foreach (var tag in Model.AvailableTags)
+        {
+            <option value="@tag.Id">@tag.Name</option>
+        }
+    </select>
+
+    <label for="authorIds">Select Authors:</label>
+    <select name="authorIds" multiple>
+        <option disabled>Select authors...</option>
+        @foreach (var author in Model.AvailableAuthors)
+        {
+            <option value="@author.Id">@author.Username</option>
+        }
+    </select>
+
+    <label for="startDate">Start Date:</label>
+    <input type="date" name="startDate" value="@Model.StartDate?.ToString("yyyy-MM-dd")" />
+
+    <label for="endDate">End Date:</label>
+    <input type="date" name="endDate" value="@Model.EndDate?.ToString("yyyy-MM-dd")" />
+
+    <button type="submit">Filter</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Excerpt</th>
+            <th>Published At</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Posts)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Excerpt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublishedAt)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <ul class="pagination">
+        @if (Model.PageNumber > 1)
+        {
+            <li>
+                <a href="@Url.Action("AllPosts", new { pageNumber = Model.PageNumber - 1, pageSize = Model.PageSize, searchQuery = Model.SearchQuery, tagIds = Model.SelectedTags, authorIds = Model.SelectedAuthors, startDate = Model.StartDate, endDate = Model.EndDate })">Previous</a>
+            </li>
+        }
+
+        @if (Model.PageNumber * Model.PageSize < Model.TotalItems)
+        {
+            <li>
+                <a href="@Url.Action("AllPosts", new { pageNumber = Model.PageNumber + 1, pageSize = Model.PageSize, searchQuery = Model.SearchQuery, tagIds = Model.SelectedTags, authorIds = Model.SelectedAuthors, startDate = Model.StartDate, endDate = Model.EndDate })">Next</a>
+            </li>
+        }
+    </ul>
+</div>
+
+
+
+
+
